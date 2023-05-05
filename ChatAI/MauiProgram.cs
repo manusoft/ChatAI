@@ -1,4 +1,5 @@
-﻿using ChatAI.ViewModels;
+﻿using ChatAI.Services;
+using ChatAI.ViewModels;
 using CommunityToolkit.Maui;
 using Microsoft.Extensions.Logging;
 
@@ -18,7 +19,9 @@ public static class MauiProgram
 				fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
 			});
 
-		builder.Services.AddSingleton<MainViewModel>();
+        builder.Services.AddSingleton<IChatService, ChatService>();
+        builder.Services.AddSingleton<MainViewModel>();
+		builder.Services.AddSingleton<MainPage>();
 
 
 #if DEBUG

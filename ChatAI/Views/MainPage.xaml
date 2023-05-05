@@ -2,33 +2,60 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             xmlns:cn="clr-namespace:ChatAI.Converters"
+             xmlns:vm="clr-namespace:ChatAI.ViewModels"
+             xmlns:m="clr-namespace:ChatAI.Models"
+             x:DataType="vm:MainViewModel"
              x:Class="ChatAI.MainPage">
 
-    <ScrollView>
-        <VerticalStackLayout
-            Spacing="25"
-            Padding="30,0"
-            VerticalOptions="Center">
+    <ContentPage.Resources>
+        <cn:MessageBackgroundColorConverter x:Key="MessageBackgroundColorConverter" />
+        <cn:MessageTextColorConverter x:Key="MessageTextColorConverter" />
+    </ContentPage.Resources>
 
-            <Image
-                Source="dotnet_bot.png"
-                SemanticProperties.Description="Cute dot net bot waving hi to you!"
-                HeightRequest="200"
-                HorizontalOptions="Center" />
-
-            <Label
-                Text="Hello, World!"
-                SemanticProperties.HeadingLevel="Level1"
-                FontSize="32"
-                HorizontalOptions="Center" />
-
-            <Label
-                Text="Welcome to .NET Multi-platform App UI"
-                SemanticProperties.HeadingLevel="Level2"
-                SemanticProperties.Description="Welcome to dot net Multi platform App U I"
-                FontSize="18"
-                HorizontalOptions="Center" />
-        </VerticalStackLayout>
-    </ScrollView>
-
+    <Grid
+        RowDefinitions="*,Auto">
+        <CollectionView 
+            x:Name="chatCollectionView"
+            ItemsSource="{Binding ChatList}"
+            SelectionMode="None"
+            ItemsUpdatingScrollMode="KeepLastItemInView"
+            VerticalOptions="FillAndExpand">
+            <CollectionView.ItemTemplate>
+                <DataTemplate x:DataType="m:Chat">
+                    <StackLayout 
+                        Padding="10">
+                        <Frame 
+                            CornerRadius="10"
+                            Padding="5"
+                            BackgroundColor="{Binding IsIncoming, Converter={StaticResource MessageBackgroundColorConverter}}"
+                            HasShadow="False">
+                            <Label 
+                                Text="{Binding Message}"
+                                TextColor="{Binding IsIncoming, Converter={StaticResource MessageTextColorConverter}}"
+                                FontSize="Medium"
+                                LineBreakMode="WordWrap"
+                                MaxLines="0" />
+                        </Frame>
+                    </StackLayout>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+            <CollectionView.ItemsLayout>
+                <LinearItemsLayout 
+                    Orientation="Vertical"
+                    ItemSpacing="5" />
+            </CollectionView.ItemsLayout>
+        </CollectionView>
+        <Grid
+            Grid.Row="1"
+            ColumnDefinitions="*,Auto">
+            <Entry 
+                Text="{Binding ChatText, Mode=TwoWay}"
+                Placeholder="Enter text here"/>
+            <Button
+                Grid.Column="1"
+                Text="Send"
+                Command="{Binding SendCommand}"/>
+        </Grid>
+    </Grid>
 </ContentPage>
