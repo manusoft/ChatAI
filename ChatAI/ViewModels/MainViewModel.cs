@@ -24,17 +24,18 @@ public partial class MainViewModel : BaseViewModel
     async void Send()
     {
         if (string.IsNullOrEmpty(ChatText)) return;
-        if (IsBusy) return;
+        if (IsBusy) return;        
 
         try
         {
             IsBusy = true;
 
-            ChatList.Add(new Chat() { Id = Guid.NewGuid().ToString(), User = "Me", Message = ChatText, IsIncoming = false, Date = DateTime.Now });
-
-            string response = await chatService.Get(ChatText);
-
+            string question = ChatText;
             ChatText = string.Empty;
+
+            ChatList.Add(new Chat() { Id = Guid.NewGuid().ToString(), User = "Me", Message = question, IsIncoming = false, Date = DateTime.Now });
+
+            string response = await chatService.Get(question);            
 
             if (!string.IsNullOrEmpty(response))
             {

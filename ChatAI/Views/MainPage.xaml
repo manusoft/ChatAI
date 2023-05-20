@@ -6,7 +6,8 @@
              xmlns:vm="clr-namespace:ChatAI.ViewModels"
              xmlns:m="clr-namespace:ChatAI.Models"
              x:DataType="vm:MainViewModel"
-             x:Class="ChatAI.MainPage">
+             x:Class="ChatAI.MainPage"
+             Title="ChatAI">
 
     <ContentPage.Resources>
         <cn:MessageBackgroundColorConverter x:Key="MessageBackgroundColorConverter" />
@@ -15,6 +16,8 @@
 
     <Grid
         RowDefinitions="*,Auto">
+        
+        <!--Chat area section-->
         <CollectionView 
             x:Name="chatCollectionView"
             ItemsSource="{Binding ChatList}"
@@ -26,36 +29,78 @@
                     <StackLayout 
                         Padding="10">
                         <Frame 
-                            CornerRadius="10"
+                            CornerRadius="1"
                             Padding="5"
                             BackgroundColor="{Binding IsIncoming, Converter={StaticResource MessageBackgroundColorConverter}}"
-                            HasShadow="False">
-                            <Label 
-                                Text="{Binding Message}"
-                                TextColor="{Binding IsIncoming, Converter={StaticResource MessageTextColorConverter}}"
-                                FontSize="Medium"
-                                LineBreakMode="WordWrap"
-                                MaxLines="0" />
+                            HasShadow="True">
+                            <Grid 
+                                RowDefinitions="Auto,Auto"
+                                RowSpacing="10">
+                                <Border
+                                    Grid.Column="0"
+                                    HeightRequest="30"
+                                    WidthRequest="40"
+                                    HorizontalOptions="Start"
+                                    VerticalOptions="Start">
+                                    <Label 
+                                        HorizontalTextAlignment="Center"
+                                        VerticalTextAlignment="Center"
+                                        
+                                        Text="{Binding User}" FontAttributes="Bold"/>
+                                </Border>                                
+                                <Label
+                                    Grid.Row="1"
+                                    Text="{Binding Message}"
+                                    TextColor="{Binding IsIncoming, Converter={StaticResource MessageTextColorConverter}}"
+                                    FontSize="Medium"
+                                    LineBreakMode="WordWrap"
+                                    MaxLines="0" />
+                              </Grid>
+                            <Frame.Shadow>
+                                <Shadow 
+                                    Brush="Black"
+                                    Opacity="0.4"
+                                    Offset="8,2"
+                                    Radius="5"/>
+                            </Frame.Shadow>
                         </Frame>
                     </StackLayout>
                 </DataTemplate>
             </CollectionView.ItemTemplate>
             <CollectionView.ItemsLayout>
                 <LinearItemsLayout 
-                    Orientation="Vertical"
-                    ItemSpacing="5" />
+                    Orientation="Vertical" />
             </CollectionView.ItemsLayout>
         </CollectionView>
-        <Grid
+        
+        <!--Chat typing section-->
+        <Frame
             Grid.Row="1"
-            ColumnDefinitions="*,Auto">
-            <Entry 
-                Text="{Binding ChatText, Mode=TwoWay}"
-                Placeholder="Enter text here"/>
-            <Button
-                Grid.Column="1"
-                Text="Send"
-                Command="{Binding SendCommand}"/>
-        </Grid>
+            Padding="5"
+            Margin="5"
+            BackgroundColor="#FFEBEB">
+            <Grid               
+                ColumnDefinitions="*,Auto"
+                ColumnSpacing="10">
+                <Entry 
+                    Text="{Binding ChatText, Mode=TwoWay}"
+                    Placeholder="Enter text here"/>
+                <ImageButton
+                    Grid.Column="1"
+                    Source="send.png"
+                    Margin="10"
+                    HeightRequest="30"
+                    WidthRequest="30"
+                    Command="{Binding SendCommand}">
+                </ImageButton>
+            </Grid>
+            <Frame.Shadow>
+                <Shadow 
+                    Brush="Black"
+                    Opacity="0.4"
+                    Offset="8,2"
+                    Radius="5"/>
+            </Frame.Shadow>
+        </Frame>
     </Grid>
 </ContentPage>

@@ -8,9 +8,9 @@ public class MessageBackgroundColorConverter : IValueConverter
     public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
     {
         if (!(value is bool isIncoming))
-            return Color.FromHex("#CBDCCB");
+            return Color.FromHex("#DBDFAA");
 
-        return isIncoming ? Color.FromHex("#D3D3D3") : Color.FromHex("#007AFF");
+        return isIncoming ? Color.FromHex("#B3C890") : Color.FromHex("#DBDFAA");
     }
 
     public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

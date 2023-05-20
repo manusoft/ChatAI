@@ -27,7 +27,7 @@ public class ChatService : IChatService
 
             Root root = JsonConvert.DeserializeObject<Root>(responseString);
 
-            return root.Choices[0].Text;
+            return root.Choices[0].Text.Trim();
         }
         catch (Exception ex)
         {
